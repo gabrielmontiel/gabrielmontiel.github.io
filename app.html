@@ -1,0 +1,308 @@
+<!doctype html>
+<html>
+<head>
+<title>Longest Prefix Match App</title>
+<meta name="description" content="Longest prefix match app">
+<meta name="keywords" content="Longest prefix match app">
+</head>
+<body>
+<h1>
+    App for longest prefix match
+</h1>
+
+<div name ="functions">
+    <script>
+
+
+        function valueEnd (ctx) {
+        const value = ctx.options.typed ? inferType(ctx.value) : ctx.value
+        ctx.entry.push(ctx.reviver(value, ctx.row, ctx.col))
+        ctx.value = ''
+        ctx.col++
+        }
+
+        function entryEnd (ctx) {
+        ctx.output.push(ctx.entry)
+        ctx.entry = []
+        ctx.row++
+        ctx.col = 1
+        }
+
+        function inferType (value) {
+        const isNumber = /.\./
+
+        switch (true) {
+            case value === 'true':
+            case value === 'false':
+            return value === 'true'
+            case isNumber.test(value):
+            return parseFloat(value)
+            case isFinite(value):
+            return parseInt(value)
+            default:
+            return value
+        }
+        }
+        function parse (csv, options, reviver = v => v) {
+        const ctx = Object.create(null)
+        ctx.options = options || {}
+        ctx.reviver = reviver
+        ctx.value = ''
+        ctx.entry = []
+        ctx.output = []
+        ctx.col = 1
+        ctx.row = 1
+
+        const lexer = /"|,|\r\n|\n|\r|[^",\r\n]+/y
+        const isNewline = /^(\r\n|\n|\r)$/
+
+        let matches = []
+        let match = ''
+        let state = 0
+
+        while ((matches = lexer.exec(csv)) !== null) {
+            match = matches[0]
+
+            switch (state) {
+            case 0: // start of entry
+                switch (true) {
+                case match === '"':
+                    state = 3
+                    break
+                case match === ',':
+                    state = 0
+                    valueEnd(ctx)
+                    break
+                case isNewline.test(match):
+                    state = 0
+                    valueEnd(ctx)
+                    entryEnd(ctx)
+                    break
+                default:
+                    ctx.value += match
+                    state = 2
+                    break
+                }
+                break
+            case 2: // un-delimited input
+                switch (true) {
+                case match === ',':
+                    state = 0
+                    valueEnd(ctx)
+                    break
+                case isNewline.test(match):
+                    state = 0
+                    valueEnd(ctx)
+                    entryEnd(ctx)
+                    break
+                default:
+                    state = 4
+                    throw Error(`CSVError: Illegal state [row:${ctx.row}, col:${ctx.col}]`)
+                }
+                break
+            case 3: // delimited input
+                switch (true) {
+                case match === '"':
+                    state = 4
+                    break
+                default:
+                    state = 3
+                    ctx.value += match
+                    break
+                }
+                break
+            case 4: // escaped or closing delimiter
+                switch (true) {
+                case match === '"':
+                    state = 3
+                    ctx.value += match
+                    break
+                case match === ',':
+                    state = 0
+                    valueEnd(ctx)
+                    break
+                case isNewline.test(match):
+                    state = 0
+                    valueEnd(ctx)
+                    entryEnd(ctx)
+                    break
+                default:
+                    throw Error(`CSVError: Illegal state [row:${ctx.row}, col:${ctx.col}]`)
+                }
+                break
+            }
+        }
+
+        // flush the last value
+        if (ctx.entry.length !== 0) {
+            valueEnd(ctx)
+            entryEnd(ctx)
+        }
+
+        return ctx.output
+        }
+        function csv2text(csv){
+            var parsed;
+            parsed= parse(csv)
+            return parsed
+        }
+
+    </script>
+</div>
+<div name="ipv4">
+    <script>
+        function ipv4tobin(ipv4){
+            var binary;
+            const octets = ipv4.split(".");
+            const binStrings = octets.map(n => parseInt(n).toString(2).padStart(8,"0"))
+            binary = binStrings.join("")
+            return binary
+        }
+        function cidr2bin(cidr){
+            var ipArray = cidr.split("/")
+            if(ipArray.length === 1){
+                ipArray.push("32");
+            }
+            ipArray[0] = ipv4tobin(ipArray[0]);
+            BinaryRoute = ipArray[0].slice(0,parseInt(ipArray[1]));
+            return BinaryRoute
+        }
+    </script>
+</div>
+<div name="trie">
+    <script>
+        function Node(key, value){
+        this.key = key
+        this.value = value  || "None"
+        this.isEndOfWord = false // false by default, a green node means this flag is true
+        this.children = {} // children are stored as Map, where key is the letter and value is a TrieNode for that letter 
+        }
+
+        class Trie{
+        constructor(){
+            this.root = new Node(null)
+        }
+
+        insert(word, value){
+            let current = this.root
+            // iterate through all the characters of word
+            for(let character of word){
+                // if node doesn't have the current character as child, insert it
+                if(current.children[character] === undefined){
+                    current.children[character] = new Node(character)
+                }
+                // move down, to insert next character
+                current = current.children[character]  
+            }
+            // mark the last inserted character as end of the word
+            current.isEndOfWord = true
+            current.value = value
+        }
+
+        search(word){
+            let current = this.root
+            // iterate through all the characters of word
+            for(let character of word){
+                if(current.children[character] === undefined){
+                    // could not find this character in sequence, return false
+                    return false
+                }
+                // move down, to match next character
+                current = current.children[character]  
+            }
+            // found all characters, return true if last character is end of a word
+            return current.isEndOfWord
+        }
+        
+        longest_prefix_match(word){
+            let current = this.root;
+            var match;
+            //iterate trough each character of the word
+            for(let character of word){
+                if(current.isEndOfWord){
+                    match = current;
+                }
+                if(current.children[character] === undefined){
+                    return match;
+                }
+                current = current.children[character];
+            }
+            return match;
+        }
+        }
+
+        const trie = new Trie();
+
+
+        //TODO: read csv file to text
+
+        //TODO: Read csv text to array
+
+
+
+        //TODO: For each in array
+        //TODO:  convert ipv4 to binary string
+        //TODO insert each binary string route
+        //TODO: longest prefix match from input text. 
+        //TODO: output longest prefix match from click.
+
+    </script>
+</div>
+<div name="fillTrie">
+    <script>
+        function fillTrie(csvArray){
+            var ipArray;
+            var BinaryRoute;
+            for (var i=0; i < csvArray.length ; i++){
+                BinaryRoute = cidr2bin(csvArray[i][0]);
+                trie.insert(BinaryRoute,csvArray[i][1]);
+            }
+        }
+    </script>
+</div>
+<div name="InputRouteTable">
+    <input type="file" name="inputfile"
+    id="inputfile">
+    <br>
+
+    <pre id="output"></pre>
+
+    <script>
+        var fr=new FileReader();
+        fr.onload=function(){
+            document.getElementById('output')
+                        .textContent="Loaded Route Table";
+            var csvArray = (csv2text(fr.result));
+            fillTrie(csvArray);
+            console.log("Trie filled")
+            }
+        document.getElementById('inputfile')
+            .addEventListener('change', function() {  
+            fr.readAsText(this.files[0]);
+            //you can read the output in fr.result
+        }) 
+        
+    </script>
+</div>
+
+<input id="cidr" type="text">
+<input id="check" type="button" value="check">
+<pre id="match"></pre>
+<script>
+    function checkIp(){
+        var cidr = document.getElementById('cidr').value
+        var binaryRoute = cidr2bin(cidr)
+        var match = trie.longest_prefix_match(binaryRoute)
+        if(match === undefined){
+            outputText = "None"
+        }
+        else{
+            outputText = match.value
+        }
+        document.getElementById("match").textContent = outputText
+    }
+    document.getElementById("check").onclick = checkIp;
+</script>
+
+</body>
+</html>
