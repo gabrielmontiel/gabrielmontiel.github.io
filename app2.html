@@ -259,10 +259,9 @@
     id="inputfile">
     <br>
     <script>
-        var fr= new FileReader();
-        fr.readAsText("route_table.csv");
-        var csvArray= csv2text(fr.result);
-        fillTrie(csvArray);
+       fetch('file.txt')
+            .then(response => response.text())
+            .then(text => fillTrie(csv2text(text)))
     </script>
     <pre id="trie_status"></pre>
 
