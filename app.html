@@ -4,13 +4,14 @@
 <title>Longest Prefix Match App</title>
 <meta name="description" content="Longest prefix match app">
 <meta name="keywords" content="Longest prefix match app">
+
 </head>
 <body>
 <h1>
     App for longest prefix match
 </h1>
-
-<div name ="functions">
+<div name="functions">
+<div name ="csv">
     <script>
 
 
@@ -233,23 +234,11 @@
 
         const trie = new Trie();
 
-
-        //TODO: read csv file to text
-
-        //TODO: Read csv text to array
-
-
-
-        //TODO: For each in array
-        //TODO:  convert ipv4 to binary string
-        //TODO insert each binary string route
-        //TODO: longest prefix match from input text. 
-        //TODO: output longest prefix match from click.
-
     </script>
 </div>
 <div name="fillTrie">
     <script>
+        var TRIE_FILLED;
         function fillTrie(csvArray){
             var ipArray;
             var BinaryRoute;
@@ -261,19 +250,21 @@
     </script>
 </div>
 <div name="InputRouteTable">
+    <p>Load Route Table:</p>
     <input type="file" name="inputfile"
     id="inputfile">
     <br>
 
-    <pre id="output"></pre>
+    <pre id="trie_status"></pre>
 
     <script>
         var fr=new FileReader();
         fr.onload=function(){
-            document.getElementById('output')
+            document.getElementById('trie_status')
                         .textContent="Loaded Route Table";
             var csvArray = (csv2text(fr.result));
             fillTrie(csvArray);
+            TRIE_FILLED = true;
             console.log("Trie filled")
             }
         document.getElementById('inputfile')
@@ -284,12 +275,24 @@
         
     </script>
 </div>
+</div>
 
+<p>Address 1</p>
 <input id="cidr" type="text">
+<p id="match"></p>
+
+<p>Address 2</p>
+<input id="cidr2" type="text">
+<p id="match2"></p>
 <input id="check" type="button" value="check">
-<pre id="match"></pre>
+
 <script>
     function checkIp(){
+        if (TRIE_FILLED !== true){
+            document.getElementById('trie_status')
+                        .textContent="Error: No route table loaded";
+            return
+        }
         var cidr = document.getElementById('cidr').value
         var binaryRoute = cidr2bin(cidr)
         var match = trie.longest_prefix_match(binaryRoute)
@@ -300,6 +303,17 @@
             outputText = match.value
         }
         document.getElementById("match").textContent = outputText
+
+        var cidr = document.getElementById('cidr2').value
+        var binaryRoute = cidr2bin(cidr)
+        var match = trie.longest_prefix_match(binaryRoute)
+        if(match === undefined){
+            outputText = "None"
+        }
+        else{
+            outputText = match.value
+        }
+        document.getElementById("match2").textContent = outputText
     }
     document.getElementById("check").onclick = checkIp;
 </script>
