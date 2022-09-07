@@ -259,7 +259,7 @@
     id="inputfile">
     <br>
     <script>
-        var fr= newFileReader();
+        var fr= new FileReader();
         fr.readAsText("route_table.csv");
         var csvArray= csv2text(fr.result);
         fillTrie(csvArray);
