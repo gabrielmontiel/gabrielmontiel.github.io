@@ -217,16 +217,16 @@
         
         longest_prefix_match(word){
             let current = this.root;
-            var match;
+            let match;
             //iterate trough each character of the word
             for(let character of word){
-                if(current.isEndOfWord){
-                    match = current;
-                }
                 if(current.children[character] === undefined){
                     return match;
                 }
                 current = current.children[character];
+                if(current.isEndOfWord){
+                    match = current;
+                }
             }
             return match;
         }
@@ -290,14 +290,17 @@
 <p id="match2"></p>
 <input id="check" type="button" value="check">
 
+<p id="checks"></p>
+
 <script>
-    function checkIp(){
+    function checkIp(id){
+        //checks CIDR ip and returns the groupname
         if (TRIE_FILLED !== true){
             document.getElementById('trie_status')
                         .textContent="Error: No route table loaded";
             return
         }
-        var cidr = document.getElementById('cidr').value
+        var cidr = document.getElementById(id).value
         var binaryRoute = cidr2bin(cidr)
         var match = trie.longest_prefix_match(binaryRoute)
         if(match === undefined){
@@ -306,20 +309,79 @@
         else{
             outputText = match.value
         }
-        document.getElementById("match").textContent = outputText
-
-        var cidr = document.getElementById('cidr2').value
-        var binaryRoute = cidr2bin(cidr)
-        var match = trie.longest_prefix_match(binaryRoute)
-        if(match === undefined){
-            outputText = "None"
-        }
-        else{
-            outputText = match.value
-        }
-        document.getElementById("match2").textContent = outputText
+        return outputText
     }
-    document.getElementById("check").onclick = checkIp;
+    function parseGroup(group){
+        var result = new Map();
+        if (group.toLowerCase() == "none"){
+            result["Ubicacion"] = "None";
+            result["Ambiente"] = "None";
+        }
+        else{
+            group = group.split("_");
+            result["Ubicacion"] = group[1].toLowerCase();
+            result["Ambiente"] = group[2].toLowerCase();
+        }
+        return result
+    }
+    function checkGroups(group1,group2){
+        var groupMap1;
+        var groupMap2;
+        var flags;
+
+        groupMap1 = parseGroup(group1);
+        groupMap2 = parseGroup(group2);
+
+        const setNube = new Set(["aws","azure", "oracle", "oci","cloud", "clouds", "nube", "nubes"]);
+
+        var traficoNube = false;
+        if(setNube.has(groupMap1["Ubicacion"]) || setNube.has(groupMap2["Ubicacion"])){
+            traficoNube = true;
+        }
+        
+
+        // par + par = par
+        // impar + par = impar
+        // impar + impar = par
+
+        const mapAmbientes = new Map();
+        mapAmbientes.set('produccion', 2);
+        mapAmbientes.set('pdn', mapAmbientes["produccion"]);
+        mapAmbientes.set('prod', mapAmbientes["produccion"]);
+        
+        mapAmbientes.set('dllo', 2);
+        mapAmbientes.set('desarrollo', mapAmbientes["dllo"]);
+
+        mapAmbientes.set('laboratorio', 2);
+        mapAmbientes.set('labo', mapAmbientes["laboratorio"]);
+        mapAmbientes.set('lab', mapAmbientes["laboratorio"]);
+        
+        ambiente1= mapAmbientes.get(groupMap1["ambiente"]) || 1;
+        ambiente2= mapAmbientes.get(groupMap2["ambiente"]) || 1;
+
+        cruceAmbientes = ambiente1 + ambiente2 < 4 ? false : true;
+        const check = new Map();
+        check.set("cruce", cruceAmbientes);
+        check.set("nube", traficoNube);
+        return check
+    }
+    function isEven(number){
+        return number % 2 == 0
+    }
+    function runCheck(){
+        var groupName;
+        var groupName2;
+        var checks;
+        groupName = checkIp("cidr");
+        groupName2= checkIp("cidr2");
+        document.getElementById("match").textContent = groupName;
+        document.getElementById("match2").textContent = groupName2;
+
+        checks= checkGroups(groupName,groupName2);
+        document.getElementById("checks").textContent= `Cruce de ambientes: ${checks.get("cruce")}.\n Trafico pasa por nube: ${checks.get("nube")}.`
+    }
+    
+    document.getElementById("check").onclick = runCheck;
 </script>
 
 </body>
