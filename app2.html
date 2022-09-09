@@ -253,10 +253,9 @@
         }
     </script>
 </div>
-<div name="InputRouteTable">
+<div style="display:none" id="routetable">
     <p>Load Route Table:</p>
-    <input type="file" name="inputfile"
-    id="inputfile">
+    <input  type="file" name="inputfile" id="inputfile">
     <br>
     <script>
        fetch('route_table.csv')
@@ -294,6 +293,8 @@
 
 <script>
     function checkIp(id){
+
+
         //checks CIDR ip and returns the groupname
         if (TRIE_FILLED !== true){
             document.getElementById('trie_status')
@@ -372,6 +373,16 @@
         var groupName;
         var groupName2;
         var checks;
+        var input1 = document.getElementById("cidr").value;
+        if(input1 == "mostrar"){
+            document.getElementById("routetable").style.display = "block";
+            return
+        }
+        if(input1 == "ocultar"){
+            document.getElementById("routetable").style.display = "none";
+            return
+        }
+
         groupName = checkIp("cidr");
         groupName2= checkIp("cidr2");
         document.getElementById("match").textContent = groupName;
@@ -379,6 +390,7 @@
 
         checks= checkGroups(groupName,groupName2);
         document.getElementById("checks").textContent= `Cruce de ambientes: ${checks.get("cruce")}.\n Trafico pasa por nube: ${checks.get("nube")}.`
+        
     }
     
     document.getElementById("check").onclick = runCheck;
