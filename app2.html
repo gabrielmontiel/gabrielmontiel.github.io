@@ -347,18 +347,18 @@
 
         const mapAmbientes = new Map();
         mapAmbientes.set('produccion', 2);
-        mapAmbientes.set('pdn', mapAmbientes["produccion"]);
-        mapAmbientes.set('prod', mapAmbientes["produccion"]);
+        mapAmbientes.set('pdn', 2);
+        mapAmbientes.set('prod', 2);
         
         mapAmbientes.set('dllo', 2);
-        mapAmbientes.set('desarrollo', mapAmbientes["dllo"]);
+        mapAmbientes.set('desarrollo', 2);
 
         mapAmbientes.set('laboratorio', 2);
-        mapAmbientes.set('labo', mapAmbientes["laboratorio"]);
-        mapAmbientes.set('lab', mapAmbientes["laboratorio"]);
+        mapAmbientes.set('labo', 2);
+        mapAmbientes.set('lab', 2);
         
-        ambiente1= mapAmbientes.get(groupMap1["ambiente"]) || 1;
-        ambiente2= mapAmbientes.get(groupMap2["ambiente"]) || 1;
+        ambiente1= mapAmbientes.get(groupMap1["Ambiente"]) || 1;
+        ambiente2= mapAmbientes.get(groupMap2["Ambiente"]) || 1;
 
         cruceAmbientes = ambiente1 + ambiente2 < 4 ? false : true;
         const check = new Map();
