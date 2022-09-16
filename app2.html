@@ -341,26 +341,29 @@
         }
         
 
-        // par + par = par
-        // impar + par = impar
-        // impar + impar = par
-
         const mapAmbientes = new Map();
-        mapAmbientes.set('produccion', 2);
-        mapAmbientes.set('pdn', 2);
-        mapAmbientes.set('prod', 2);
+        mapAmbientes.set('produccion', "p");
+        mapAmbientes.set('pdn', "p");
+        mapAmbientes.set('prod', "p");
         
-        mapAmbientes.set('dllo', 2);
-        mapAmbientes.set('desarrollo', 2);
+        mapAmbientes.set('dllo', "d");
+        mapAmbientes.set('desarrollo', "d");
 
-        mapAmbientes.set('laboratorio', 2);
-        mapAmbientes.set('labo', 2);
-        mapAmbientes.set('lab', 2);
+        mapAmbientes.set('laboratorio', "l");
+        mapAmbientes.set('labo', "l");
+        mapAmbientes.set('lab', "l");
         
-        ambiente1= mapAmbientes.get(groupMap1["Ambiente"]) || 1;
-        ambiente2= mapAmbientes.get(groupMap2["Ambiente"]) || 1;
+        ambiente1= mapAmbientes.get(groupMap1["Ambiente"]) || "";
+        ambiente2= mapAmbientes.get(groupMap2["Ambiente"]) || "";
 
-        cruceAmbientes = ambiente1 + ambiente2 < 4 ? false : true;
+        setAmbientes = new Set();
+        setAmbientes.add("");
+        setAmbientes.add(ambiente1);
+        setAmbientes.add(ambiente2);
+
+        
+
+        cruceAmbientes = setAmbientes.size == 2 ? false : true;
         const check = new Map();
         check.set("cruce", cruceAmbientes);
         check.set("nube", traficoNube);
