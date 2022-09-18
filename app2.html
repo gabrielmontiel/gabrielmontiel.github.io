@@ -4,7 +4,10 @@
 <title>Longest Prefix Match App</title>
 <meta name="description" content="Longest prefix match app">
 <meta name="keywords" content="Longest prefix match app">
-
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>
@@ -279,27 +282,36 @@
     </script>
 </div>
 </div>
-
-<p>Address 1</p>
+<div class="mb-3">
+<label class="form-label">Address 1</label>
 <input id="cidr" type="text">
 <p id="match"></p>
 
-<p>Address 2</p>
-<input id="cidr2" type="text">
+<label class="form-label">Address 2</label>
+<input class="mb-3" id="cidr2" type="text">
 <p id="match2"></p>
-<input id="check" type="button" value="check">
+<input class="btn btn-primary" id="check" type="button" value="check">
 
 <p id="checks"></p>
+</div>
 
-<p>Si la tarea es 15:</p>
-<p>Si el trafico pasa por nube sin cruce: Asignar</p>
-<p>Si el trafico pasa por nube con cruce: Escalar a riesgos</p>
-<p>Si el trafico no pasa por nube: Completar tarea.</p>
+<div>
+<ul class="list-group">
+<li class="list-group-item list-group-item-primary">Si la tarea es 15:</li>
+<li class="list-group-item">Si el trafico pasa por nube sin cruce: Asignar</li>
+<li class="list-group-item">Si el trafico pasa por nube con cruce: Escalar a riesgos</li>
+<li class="list-group-item">Si el trafico no pasa por nube: Completar tarea.</li>
+</ul>
+</div>
 
-<p>Tareas 45:</p>
-<p>Revisar la tarea 15 ticket->relationships->workflow tasks.</p>
-<p>si fue trafico no pasa por nube: Completar.</p>
-<p>Todo lo demas: Asignar.</p>
+<div>
+<ul class="list-group">
+<li class="list-group-item list-group-item-primary" >Tareas 45:</li>
+<li class="list-group-item">Revisar la tarea 15 ticket->relationships->workflow tasks.</p>
+<li class="list-group-item">Si fue trafico no pasa por nube: Completar.</p>
+<li class="list-group-item">Todo lo demas: Asignar.</p>
+</ul>
+</div>
 
 <script>
     function checkIp(id){
