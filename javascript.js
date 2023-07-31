@@ -172,12 +172,12 @@ function parseReport(csvArray) {
             continue
         }
         if (appMap.has(rule)) {
-            appArray = appMap.get(rule).push(app)
+            appArray = appMap.get(rule).add(app)
         }
         else {
-            var appArray = [];
-            appArray.push(app)
-            appMap.set(rule, appArray)
+            const appSet = new Set();
+            appSet.add(app)
+            appMap.set(rule, appSet)
 
         }
     }
@@ -240,7 +240,7 @@ function createSetCommands() {
     var output = "";
     for (let [rulename, applications] of applicationsMap) {
         //console.log(key + " = " + value);
-
+        applications = Array.from(applications);
         if (rulename.startsWith("[Disabled]")) {
             continue
         }
