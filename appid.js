@@ -1,3 +1,5 @@
+popoverParserOptions = {"trigger": "hover"}
+$('#parser').popover(popoverParserOptions)
 
 function valueEnd(ctx) {
     const value = ctx.options.typed ? inferType(ctx.value) : ctx.value
