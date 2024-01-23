@@ -204,6 +204,21 @@ document.getElementById('rulebase')
 
 document.getElementById("submitbutton").addEventListener("click", createSetCommands);
 
+document.getElementById("copybutton").addEventListener("click", copyText);
+
+function copyText() {
+    // Get the text field
+    var copyText = document.getElementById("output");
+  
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+  
+     // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+  
+  }
+
 function createSetCommands() {
     parseReport(csvArray);
     if (RuleBase == null || applicationsMap == null) {
@@ -239,8 +254,8 @@ function createSetCommands() {
     var rulebase_stored = document.getElementById("rulebase_store").value;
 
     var output = "";
-    output += `<p>set shared tag "Appid-Old"</p>`
-    output += `<p>set shared tag "Appid-New"</p>`
+    output += `set shared tag "Appid-Old"\n`
+    output += `set shared tag "Appid-New"\n`
 
     for (let [rulename, applications] of applicationsMap) {
         //console.log(key + " = " + value);
@@ -283,15 +298,15 @@ function createSetCommands() {
         var addtag1 = `set device-group ${device_group} ${rulebase_stored} security rules "${rulename}" tag "Appid-Old"`
         var addtag2 = `set device-group ${device_group} ${rulebase_stored} security rules "${new_rulename}" tag "Appid-New"`
         
-        output += `<p>${copy_command}</p>`
-        output += `<p>${move_command}</p>`
-        output += `<p>${removeany_command}</p>`
-        output += `<p>${addApps_command}</p>`
-        output += `<p>${addtag1}</p>`
-        output += `<p>${addtag2}</p>`
+        output += `${copy_command}\n`
+        output += `${move_command}\n`
+        output += `${removeany_command}\n`
+        output += `${addApps_command}\n`
+        output += `${addtag1}\n`
+        output += `${addtag2}\n`
 
     }
     const element = document.getElementById("output")
-    element.innerHTML = `<code>${output}</code>`
+    element.innerHTML = `${output}`
 
 }

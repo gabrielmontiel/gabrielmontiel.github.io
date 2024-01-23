@@ -1,7 +1,8 @@
+body {
+    padding: 20px;
+    }
+
 .inline {
     display: inline-block;
 }
 
-body {
-    margin: 20px;
-    }
