@@ -230,6 +230,12 @@ function createSetCommands() {
 
     var nameHeader;
     var applicationColumn;
+    var LocationColumn;
+    var device_group = document.getElementById("dg").value;
+    var rulebase_stored = document.getElementById("rulebase_store").value;
+    
+
+    //get columns for parsing
     for (var j = 0; j < RuleBase[0].length; j++) {
         if (RuleBase[0][j] == "Name") {
             nameHeader = j
@@ -237,14 +243,23 @@ function createSetCommands() {
         if (RuleBase[0][j] == "Application") {
             applicationColumn = j
         }
-
+        if (RuleBase[0][j] == "Location") {
+            LocationColumn = j
+        }
     }
     var rulesObject = {}
     var rulenamesArray = [];
 
     //skip header i=1
     for (var i = 1; i < RuleBase.length; i++) {
+        //filter rules not in device group!
+        if (RuleBase[i][LocationColumn] != device_group){
+            continue;
+        }
+
+        //add Rule names to rulenamesArray
         rulenamesArray.push(RuleBase[i][nameHeader])
+        
         rulesObject[RuleBase[i][nameHeader]] = {
             Application: RuleBase[i][applicationColumn]
         }
@@ -252,8 +267,7 @@ function createSetCommands() {
 
     const rulenamesSet = new Set(rulenamesArray);
 
-    var device_group = document.getElementById("dg").value;
-    var rulebase_stored = document.getElementById("rulebase_store").value;
+    
 
     var output = "";
     output += `set shared tag "Appid-Old"\n`
