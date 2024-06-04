@@ -3,6 +3,8 @@ run-name: Dynamic list is updating 🚀
 on: 
   schedule:
    - cron: '30 5 14,28 * *'
+  workflow_dispatch:
+
 jobs:
   
   Explore-GitHub-Actions:
