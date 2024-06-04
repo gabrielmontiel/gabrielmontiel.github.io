@@ -1,0 +1,30 @@
+name: Update list
+run-name: Dynamic list is updating 🚀
+on: 
+  schedule:
+   - cron: '30 5 14,28 * *'
+  workflow_dispatch:
+
+jobs:
+  
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.11" ]
+    permissions:
+      contents: write
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # Other steps that change files in the repository
+      - uses: actions/setup-python@v5
+      - run: python -m pip install --upgrade pip requests bs4
+      - run: python get_oci_ips_.py
+      # Commit all changed files back to the repository
+      - uses: stefanzweifel/git-auto-commit-action@v5
+
+
+
