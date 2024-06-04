@@ -1,6 +1,8 @@
 name: Update list
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: 
+  schedule:
+   - cron: '30 5 14,28 * *'
 jobs:
   
   Explore-GitHub-Actions:
