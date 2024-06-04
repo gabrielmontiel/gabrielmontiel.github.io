@@ -1,4 +1,4 @@
-popoverParserOptions = {"trigger": "hover"}
+popoverParserOptions = {"trigger": "click"}
 $('#parser').popover(popoverParserOptions)
 
 function valueEnd(ctx) {
