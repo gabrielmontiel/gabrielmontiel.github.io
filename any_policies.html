@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- TODO: ADD GOOGLE TRACK -->
+
+    <title>Any policies app</title>
+    <meta name="description" content="App-id adoption app">
+    <meta name="keywords" content="App-id adoption app">
+
+    <link rel="stylesheet" href="appid.css">
+
+    <!-- Popper.js-->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <h1>
+        Any security policies APP
+    </h1>
+    <button type="button" class="btn btn-secondary" data-toggle="popover" title="Filtro para reporte" id="parser"
+    data-content="(action eq allow ) and ( app neq incomplete ) and ( app neq insufficient-data ) and (device-group eq dg-core-prd)">Filtro</button>
+
+
+
+    <div id="Report">
+        <p class="inline">Load Report.csv (Traffic report):</p>
+        <input class="inline" type="file" name="inputfile" id="inputfile">
+    </div>
+
+    <div id="rulebasediv">
+        <p class="inline">Load rulebase.csv (Rulebase export as csv):</p>
+        <input class="inline" type="file" name="rulebase" id="rulebase">
+    </div>
+
+    <div id="networksdiv">
+        <p class="inline">Load networks.csv (Network CIDRs as csv):</p>
+        <input class="inline" type="file" name="networks" id="networks">
+        <pre id="trie_status"></pre>
+    </div>
+
+    <br>
+    <p class="inline">Select rulebase:</p>
+    <select class="inline" name="rulebase" id="rulebase_store">
+        <option value="pre-rulebase">pre-rulebase</option>
+        <option value="post-rulebase">post-rulebase</option>
+    </select>
+
+    <br>
+    <label for="dg">Device group:</label>
+    <input type="text" id="dg" name="dg" value="DeviceGroup"><br><br>
+    <label for="suffix">Rule Suffix:</label>
+    <input type="text" id="suffix" name="suffix" value="-APP"><br><br>
+
+
+
+    <button id="submitbutton">Send request</button>
+
+    <button id="copybutton" type="button" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"></path>
+    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"></path>
+    </svg>
+        Copy Output
+    </button>
+
+    <div>
+        <textarea id="output" rows="8" cols="100">Output</textarea>
+    </div>
+
+    <script type="text/javascript" src="any_policies.js"></script>
+</body>
+
+</html>
