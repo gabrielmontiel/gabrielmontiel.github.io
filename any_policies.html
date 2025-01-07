@@ -43,11 +43,6 @@
         <input class="inline" type="file" name="inputfile" id="inputfile">
     </div>
 
-    <div id="rulebasediv">
-        <p class="inline">Load rulebase.csv (Rulebase export as csv):</p>
-        <input class="inline" type="file" name="rulebase" id="rulebase">
-    </div>
-
     <div id="networksdiv">
         <p class="inline">Load networks.csv (Network CIDRs as csv):</p>
         <input class="inline" type="file" name="networks" id="networks">
@@ -67,7 +62,9 @@
     <label for="suffix">Rule Suffix:</label>
     <input type="text" id="suffix" name="suffix" value="-APP"><br><br>
 
-
+    <p class="inline">App-id blacklist</p>
+    <textarea class="inline" id="blacklist" name="blacklist" rows="3"
+        cols="50">insufficient-data unknown-tcp unknown-udp incomplete</textarea><br>
 
     <button id="submitbutton">Send request</button>
 
